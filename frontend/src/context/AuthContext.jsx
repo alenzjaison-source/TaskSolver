@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from '../api/axios';
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://tasksolver-backend.onrender.com';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   // Register handler
   const register = async (username, email, password, passwordConfirm) => {
     try {
-      await api.post('/auth/register/', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/register/`, {
         username,
         email,
         password,
