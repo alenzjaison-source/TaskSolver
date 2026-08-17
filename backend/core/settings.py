@@ -40,11 +40,8 @@ SECRET_KEY_FALLBACKS = [
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
-allowed_hosts_env = os.environ.get("ALLOWED_HOSTS")
-if allowed_hosts_env:
-    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",")] + ["127.0.0.1", "localhost"]
-else:
-    ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
