@@ -194,6 +194,10 @@ elif DEBUG:
 else:
     CORS_ALLOWED_ORIGINS = default_cors
 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.onrender\.com$",
+    r"^https://.*\.vercel\.app$",
+]
 CORS_ALLOW_CREDENTIALS = True
 
 env_csrf = os.environ.get('CSRF_TRUSTED_ORIGINS')
@@ -201,6 +205,7 @@ if env_csrf:
     CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in env_csrf.split(',') if origin.strip()]
 else:
     CSRF_TRUSTED_ORIGINS = [
+        'https://*.onrender.com',
         'https://tasksolver-backend.onrender.com',
         'https://tasksolver-frontend.onrender.com',
         'http://localhost:5173',
