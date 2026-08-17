@@ -183,6 +183,8 @@ default_cors = [
     'http://127.0.0.1:5173',
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'https://tasksolver-frontend.onrender.com',
+    'https://task-solver-erw3.vercel.app',
 ]
 env_cors = os.environ.get('CORS_ALLOWED_ORIGINS')
 if env_cors:
