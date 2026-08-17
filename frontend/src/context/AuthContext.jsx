@@ -83,10 +83,14 @@ export const AuthProvider = ({ children }) => {
       return await login(username, password);
     } catch (error) {
       let errorMessage = 'Registration failed. Please check your inputs.';
-      if (error.response?.data) {
+      if (error.response?.status === 500) {
+        errorMessage = 'Internal Server Error (500). The database may not be migrated or connected.';
+      } else if (error.response?.data) {
         const errorData = error.response.data;
         if (typeof errorData === 'string') {
-          errorMessage = errorData;
+          errorMessage = errorData.startsWith('<') 
+            ? `Server error (${error.response.status}). Please check backend service.` 
+            : errorData;
         } else if (typeof errorData === 'object') {
           const keys = Object.keys(errorData);
           if (keys.length > 0) {
@@ -96,6 +100,8 @@ export const AuthProvider = ({ children }) => {
             errorMessage = `${firstKey}: ${detail}`;
           }
         }
+      } else if (error.message) {
+        errorMessage = error.message;
       }
       return { success: false, error: errorMessage };
     }
