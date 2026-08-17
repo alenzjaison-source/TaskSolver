@@ -86,10 +86,16 @@ export const AuthProvider = ({ children }) => {
       let errorMessage = 'Registration failed. Please check your inputs.';
       if (error.response?.data) {
         const errorData = error.response.data;
-        if (typeof errorData === 'object') {
-          const firstKey = Object.keys(errorData)[0];
-          const firstVal = errorData[firstKey];
-          errorMessage = Array.isArray(firstVal) ? `${firstKey}: ${firstVal[0]}` : String(firstVal);
+        if (typeof errorData === 'string') {
+          errorMessage = errorData;
+        } else if (typeof errorData === 'object') {
+          const keys = Object.keys(errorData);
+          if (keys.length > 0) {
+             const firstKey = Object.keys(errorData)[0];
+             const firstVal = errorData[firstKey];
+             const detail= Array.isArray(firstVal) ? firstVal[0] : firstVal;
+             errorMessage = `${firstKey}: ${detail}`;
+          }
         }
       }
       return { success: false, error: errorMessage };
