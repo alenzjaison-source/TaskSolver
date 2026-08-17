@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   // Login handler
   const login = async (username, password) => {
     try {
-      const response = await api.post('/auth/token/', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/token/`, {
         username,
         password,
       });
@@ -57,7 +57,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('refreshToken', refresh);
 
       // Fetch user profile immediately after getting tokens
-      const profileResponse = await api.get('/auth/me/');
+      // Replace line 60 with:
+    const profileResponse = await api.get('/api/auth/me/');
       setUser(profileResponse.data);
       return { success: true, user: profileResponse.data };
     } catch (error) {

@@ -192,8 +192,7 @@ if env_cors:
 elif DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
-    CORS_ALLOWED_ORIGINS = default_cors + [
-        'https://task-solver-erw3-git-main-alenzjaison-sources-projects.vercel.app',    ]
+    CORS_ALLOWED_ORIGINS = default_cors
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -202,9 +201,10 @@ if env_csrf:
     CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in env_csrf.split(',') if origin.strip()]
 else:
     CSRF_TRUSTED_ORIGINS = [
-        'https://task-solver-erw3-git-main-alenzjaison-sources-projects.vercel.app',
+        'https://tasksolver-backend.onrender.com',
+        'https://tasksolver-frontend.onrender.com',
         'http://localhost:5173',
-        'https://127.0.0.1:5173',
+        'http://127.0.0.1:5173',
     ]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
