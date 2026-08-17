@@ -42,7 +42,7 @@ DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
 
 allowed_hosts_env = os.environ.get("ALLOWED_HOSTS")
 if allowed_hosts_env:
-    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",") if host.strip()]
+    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",")] + ["127.0.0.1", "localhost"]
 else:
     ALLOWED_HOSTS = ['*']
 
@@ -193,12 +193,18 @@ if env_cors:
 elif DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
-    CORS_ALLOWED_ORIGINS = default_cors
+    CORS_ALLOWED_ORIGINS = default_cors + [
+        'https://task-solver-erw3-git-main-alenzjaison-sources-projects.vercel.app',    ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 env_csrf = os.environ.get('CSRF_TRUSTED_ORIGINS')
 if env_csrf:
     CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in env_csrf.split(',') if origin.strip()]
-
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://task-solver-erw3-git-main-alenzjaison-sources-projects.vercel.app',
+        'http://localhost:5173',
+        'https://127.0.0.1:5173',
+    ]
 
