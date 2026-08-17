@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import api from '../api/axios';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://tasksolver-backend.onrender.com';
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   // Login handler
   const login = async (username, password) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/auth/token/`, {
+      const response = await api.post('/auth/token/', {
         username,
         password,
       });
@@ -57,8 +57,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('refreshToken', refresh);
 
       // Fetch user profile immediately after getting tokens
-      // Replace line 60 with:
-    const profileResponse = await api.get('/api/auth/me/');
+      const profileResponse = await api.get('/auth/me/');
       setUser(profileResponse.data);
       return { success: true, user: profileResponse.data };
     } catch (error) {
@@ -73,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   // Register handler
   const register = async (username, email, password, passwordConfirm) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/auth/register/`, {
+      await api.post('/auth/register/', {
         username,
         email,
         password,
@@ -91,10 +90,10 @@ export const AuthProvider = ({ children }) => {
         } else if (typeof errorData === 'object') {
           const keys = Object.keys(errorData);
           if (keys.length > 0) {
-             const firstKey = Object.keys(errorData)[0];
-             const firstVal = errorData[firstKey];
-             const detail= Array.isArray(firstVal) ? firstVal[0] : firstVal;
-             errorMessage = `${firstKey}: ${detail}`;
+            const firstKey = keys[0];
+            const firstVal = errorData[firstKey];
+            const detail = Array.isArray(firstVal) ? firstVal[0] : firstVal;
+            errorMessage = `${firstKey}: ${detail}`;
           }
         }
       }
