@@ -15,13 +15,8 @@ const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!username.trim() || !password || !passwordConfirm) {
-      setError('Please fill in all required fields.');
-      return;
-    }
 
     if (password !== passwordConfirm) {
       setError('Passwords do not match.');
@@ -33,16 +28,26 @@ const Register = () => {
       return;
     }
 
-    setLoading(true);
-    setError('');
+    try {
+      setLoading(true);
+      setError('');
+      
+      const result = await register(
+        username.trim(), 
+        email.trim(), 
+        password, 
+        passwordConfirm
+      );
 
-    const result = await register(username.trim(), email.trim(), password, passwordConfirm);
-    setLoading(false);
-
-    if (result.success) {
-      navigate('/', { replace: true });
-    } else {
-      setError(result.error);
+      if (result?.success) {
+        navigate('/', { replace: true });
+      } else {
+        setError(result?.error || 'Registration failed. Please check your inputs.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
